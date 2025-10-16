@@ -19,6 +19,8 @@ public class ScrabbleGame {
     public static void main(String[] args) {
 
         //Read text file of words and defs into the ArrayList
+        //  (Try catch ensures our program does not implode
+        //  if the file is not found)
         Scanner input = null;
         try {
             input = new Scanner(new File("ScrabbleWordList.txt"));
@@ -60,11 +62,65 @@ public class ScrabbleGame {
         String userWord = scnr.next();
         System.out.println("Your word: " + userWord);
 
-        //binary search to search for the word the user entered 
+        Word word1 = new Word(userWord, "N/A");
 
-        //Add function to exchange a letter
+        boolean found = BinarySearch(dictionary, word1);
+
+        if (found) {
+            System.out.println("Valid word - congrats!");
+            int points = word1.getPoints(userWord);
+
+            if (points > 1) {
+                System.out.println("You earned " + points + " points!");
+            }
+            else {
+                System.out.println("You earned " + points + " point!");
+            }
+        }
+        else {
+            System.out.println("Invalid word - sorry!");
+        }
+
+        scnr.close();
 
 
+    }
+
+    //Binary search method - returns true if the user word is found in the 
+    //dictionary, false if not
+    public static boolean BinarySearch(List<Word> dictionary, Word key) {
+
+        int low = 0;
+        int high = dictionary.size() - 1;
+
+        while (high >= low) {
+            int mid = (low + high) / 2;
+
+            //Current middle word
+            Word midWord = dictionary.get(mid);
+
+            //Compare user word to current middle word
+            int wordCompare = key.compareTo(midWord);
+
+            //If user word is alphabetically smaller than the
+            //middle word, then search lower half of array
+            if(wordCompare < 0) {
+                high = mid - 1;
+            }
+            //If user word is alphabetically larger than the
+            //middle word, then search upper half of array
+            else if(wordCompare > 0) {
+                low = mid + 1;
+            }
+            //If user word matches the current middle word in
+            //the dictionary, then the word is found
+            else if(wordCompare == 0) {
+                return true;
+            }
+        }
+
+        //Word not found
+        return false;
     }
 
 }

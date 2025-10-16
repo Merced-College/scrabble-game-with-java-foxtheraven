@@ -12,6 +12,31 @@ public class Word implements Comparable<Word> {
         this.definition = definition;
     }
 
+    //Add a method to assign points based on the length of the word
+    public int getPoints(String word) {
+        int wordLength = word.length();
+        int points = 0;
+
+        switch(wordLength) {
+            case 1:
+                points = 1;
+                break;
+            case 2:
+                points = 1;
+                break;
+            case 3:
+                points = 2;
+                break;
+            case 4:
+                points = 3;
+                break;
+        }
+        
+        return points;
+
+    }
+    
+
     //Getters and setters
     public void setWord(String word) {
         this.word = word;
